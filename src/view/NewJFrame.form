@@ -239,6 +239,9 @@
                       <Image iconType="3" name="/images/icons8-delete-50.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDeleteActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="jButtonAdd">
                   <Properties>
@@ -266,6 +269,9 @@
                       <Image iconType="3" name="/images/icons8-edit-50.png"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonEditActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

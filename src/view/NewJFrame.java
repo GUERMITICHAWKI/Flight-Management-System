@@ -6,6 +6,7 @@ package view;
 
 import controller.AeroportDAOController;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Aeroport;
 import view.AddAeroportUI;
@@ -22,6 +23,8 @@ public class NewJFrame extends javax.swing.JFrame {
      */
     public NewJFrame() {
     initComponents();
+    loadAeroports(); // remplir le tableau dès l'ouverture
+
 }
 
 
@@ -139,6 +142,11 @@ private void loadAeroports() {
         );
 
         jButtonDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-delete-50.png"))); // NOI18N
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteActionPerformed(evt);
+            }
+        });
 
         jButtonAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-add-50.png"))); // NOI18N
         jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -155,6 +163,11 @@ private void loadAeroports() {
         });
 
         jButtonEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-edit-50.png"))); // NOI18N
+        jButtonEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelContentsLayout = new javax.swing.GroupLayout(jPanelContents);
         jPanelContents.setLayout(jPanelContentsLayout);
@@ -252,6 +265,56 @@ private void loadAeroports() {
     loadAeroports();
 
     }//GEN-LAST:event_jButtonRefershActionPerformed
+
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
+  int row = jTableAeroport.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Sélectionne un aéroport d'abord.");
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(
+            this,
+            "Tu veux vraiment supprimer cet aéroport ?",
+            "Confirmation",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm != JOptionPane.YES_OPTION) {
+        return; // l'utilisateur a cliqué sur NON
+    }
+
+    int id = (int) jTableAeroport.getValueAt(row, 0);
+    aeroportDAO.delete(id);    // ta méthode DAO
+    loadAeroports();
+
+    JOptionPane.showMessageDialog(this, "Aéroport supprimé avec succès.");        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jButtonEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditActionPerformed
+
+ try{
+            int selectedRow = jTableAeroport.getSelectedRow();
+            if (selectedRow == -1 ){
+                JOptionPane.showMessageDialog(null, "Error ! Select Row Plz!", "Error Message", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Integer id = (int)  jTableAeroport.getValueAt(selectedRow, 0) ;
+
+            int p = JOptionPane.showConfirmDialog(null, "Do u Really want to edit user with Id: " + id, "Confirmation required !", JOptionPane.YES_NO_OPTION);
+
+            if (p!=1){
+              
+                new EditAeroportUI(id).setVisible(true);
+               
+            }
+           
+         }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Error Delete!", "Error Message", JOptionPane.ERROR_MESSAGE);
+
+        }
+                   // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonEditActionPerformed
 
     /**
      * @param args the command line arguments
