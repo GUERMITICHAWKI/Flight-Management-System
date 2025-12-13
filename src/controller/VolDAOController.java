@@ -63,32 +63,52 @@ public class VolDAOController implements DAO<Vol, Integer> {
         }
     }
 
-    public ArrayList<Vol> getAll() {
-        try {
-            Statement st = MyConnection.getInstance().getConnection().createStatement();
-            String req = "SELECT * FROM vol";
-            System.out.println("getAll Vol Done!");
-            ArrayList<Vol> liste = new ArrayList<>();
-            ResultSet rs = st.executeQuery(req);
-            while (rs.next()) {
-                Vol v = new Vol();
-                v.setId(rs.getInt("id"));
-                v.setDateDepart(rs.getDate("dateDepart").toLocalDate());
-                v.setHeureDepart(rs.getTime("heureDepart").toLocalTime());
-                v.setDateArrivee(rs.getDate("dateArrivee").toLocalDate());
-                v.setHeureArrivee(rs.getTime("heureArrivee").toLocalTime());
-                v.setReservable(rs.getBoolean("reservable"));
+   public ArrayList<Vol> getAll() {
+    try {
+        Statement st = MyConnection.getInstance().getConnection().createStatement();
 
-                // si tu veux, tu peux charger les aéroports ici plus tard
-                liste.add(v);
-            }
-            return liste;
-        } catch (SQLException ex) {
-            Logger.getLogger(Vol.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.println("getAll Vol Failed!");
-            return null;
+        String req =
+            "SELECT v.*, " +
+            "       ad.nom AS nom_aero_dep, " +
+            "       aa.nom AS nom_aero_arr " +
+            "FROM vol v " +
+            "JOIN aeroport ad ON v.aeroport_depart_id = ad.id " +
+            "JOIN aeroport aa ON v.aeroport_arrivee_id = aa.id";
+
+        System.out.println("getAll Vol Done!");
+        ArrayList<Vol> liste = new ArrayList<>();
+        ResultSet rs = st.executeQuery(req);
+
+        while (rs.next()) {
+            Vol v = new Vol();
+            v.setId(rs.getInt("id"));
+            v.setDateDepart(rs.getDate("dateDepart").toLocalDate());
+            v.setHeureDepart(rs.getTime("heureDepart").toLocalTime());
+            v.setDateArrivee(rs.getDate("dateArrivee").toLocalDate());
+            v.setHeureArrivee(rs.getTime("heureArrivee").toLocalTime());
+            v.setReservable(rs.getBoolean("reservable"));
+
+            Aeroport dep = new Aeroport();
+            dep.setId(rs.getInt("aeroport_depart_id"));
+            dep.setNom(rs.getString("nom_aero_dep"));
+
+            Aeroport arr = new Aeroport();
+            arr.setId(rs.getInt("aeroport_arrivee_id"));
+            arr.setNom(rs.getString("nom_aero_arr"));
+
+            v.setAeroportDepart(dep);
+            v.setAeroportArrivee(arr);
+
+            liste.add(v);
         }
+        return liste;
+    } catch (SQLException ex) {
+        Logger.getLogger(Vol.class.getName()).log(Level.SEVERE, null, ex);
+        System.err.println("getAll Vol Failed!");
+        return null;
     }
+}
+
 
     public Vol findById(Integer id) {
         try {

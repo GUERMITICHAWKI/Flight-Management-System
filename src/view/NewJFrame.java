@@ -37,16 +37,24 @@ private void loadVols() {
 
     ArrayList<Vol> vols = volDAO.getAll();
     if (vols != null) {
-        for (Vol v : vols) {
-            model.addRow(new Object[]{
-                v.getId(),
-                v.getDateDepart(),
-                v.getHeureDepart(),
-                v.getDateArrivee(),
-                v.getHeureArrivee(),
-                v.isReservable()
-            });
-        }
+       for (Vol v : vols) {
+    System.out.println("Vol id=" + v.getId()
+            + " dep=" + (v.getAeroportDepart() != null ? v.getAeroportDepart().getNom() : "null")
+            + " arr=" + (v.getAeroportArrivee() != null ? v.getAeroportArrivee().getNom() : "null"));
+
+    String nomDep = v.getAeroportDepart() != null ? v.getAeroportDepart().getNom() : "";
+    String nomArr = v.getAeroportArrivee() != null ? v.getAeroportArrivee().getNom() : "";
+
+    model.addRow(new Object[] {
+        v.getId(),
+        nomDep,
+        nomArr,
+        v.getDateDepart(),
+        v.getHeureDepart(),
+        v.getDateArrivee(),
+        v.getHeureArrivee()
+    });
+}
     }
 }
 
@@ -271,13 +279,13 @@ private void loadAeroports() {
 
         jTableVol.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id", "Aéroport départ  ", "Aéroport arrivée  ", "Date départ", "Heure départ", "Date arrivée", "Heure arrivée"
             }
         ));
         jScrollPane2.setViewportView(jTableVol);
@@ -442,6 +450,24 @@ private void loadAeroports() {
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonVolEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolEditActionPerformed
+ int row = jTableVol.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Sélectionnez un vol.");
+        return;
+    }
+
+    Object value = jTableVol.getValueAt(row, 0);  // colonne 0 = id
+    int id;
+
+    if (value instanceof Integer) {
+        id = (Integer) value;
+    } else {
+        id = Integer.parseInt(value.toString());
+    }
+
+    EditVolUI ui = new EditVolUI(id);
+    ui.setVisible(true);
+
      // TODO add your handling code here:
     }//GEN-LAST:event_jButtonVolEditActionPerformed
 

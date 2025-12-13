@@ -3,7 +3,7 @@ package model;
 public class Aeroport {
 
     private int id;
-    private String nom;
+    public String nom;
     private String pays;
 
     public Aeroport() {
@@ -32,5 +32,5 @@ public class Aeroport {
     @Override
     public String toString() {
         return "Aeroport{" + "id=" + id + ", nom=" + nom + ", pays=" + pays + '}';
-    }
+    }   
 }

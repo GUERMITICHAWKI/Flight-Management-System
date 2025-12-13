@@ -9,6 +9,7 @@ package view;
  * @author CHAWKI
  */
 import controller.AeroportDAOController;
+import javax.swing.WindowConstants;
 import model.Aeroport;
 
 public class AddAeroportUI extends javax.swing.JFrame {
@@ -19,6 +20,9 @@ public class AddAeroportUI extends javax.swing.JFrame {
         initComponents();
         aeroportDAO = new AeroportDAOController();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        
     }
 
     /**
