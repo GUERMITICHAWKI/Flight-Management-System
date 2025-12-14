@@ -13,6 +13,7 @@ import model.Aeroport;
 import model.Vol;
 import view.AddAeroportUI;
 import controller.EscaleDAOController;
+import java.awt.Color;
 import javax.swing.table.TableRowSorter;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentListener;
@@ -37,6 +38,30 @@ private javax.swing.table.TableRowSorter<javax.swing.table.TableModel> volSorter
      */
     public NewJFrame() {
      initComponents();
+    loadAeroports();
+    loadVols();
+
+    // Placeholder pour la recherche de vol
+    txtSearchVol.setText("Id ou nom aéroport départ");
+    txtSearchVol.setForeground(Color.GRAY);
+
+    txtSearchVol.addFocusListener(new java.awt.event.FocusAdapter() {
+        @Override
+        public void focusGained(java.awt.event.FocusEvent e) {
+            if (txtSearchVol.getText().equals("Id ou nom aéroport départ")) {
+                txtSearchVol.setText("");
+                txtSearchVol.setForeground(Color.BLACK);
+            }
+        }
+
+        @Override
+        public void focusLost(java.awt.event.FocusEvent e) {
+            if (txtSearchVol.getText().trim().isEmpty()) {
+                txtSearchVol.setText("Id ou nom aéroport départ");
+                txtSearchVol.setForeground(Color.GRAY);
+            }
+        }
+    });
     loadAeroports();
     loadVols(); 
     // important pour que le modèle soit rempli
@@ -91,13 +116,29 @@ private void loadVols() {
 
 private void filterVols() {
     String text = txtSearchVol.getText().trim();
-    if (text.isEmpty()) {
+
+    if (text.isEmpty() || text.equals("Id ou nom aéroport départ")) {
         volSorter.setRowFilter(null);
+        return;
+    }
+
+    // Si l'utilisateur tape un nombre: filtrer par id exact
+    if (text.matches("\\d+")) {
+        int id = Integer.parseInt(text);
+        volSorter.setRowFilter(new javax.swing.RowFilter<javax.swing.table.TableModel, Integer>() {
+            @Override
+            public boolean include(Entry<? extends javax.swing.table.TableModel, ? extends Integer> entry) {
+                Object val = entry.getValue(0); // colonne id
+                return val != null && val.toString().equals(String.valueOf(id));
+            }
+        });
     } else {
-        // 0 = id, 1 = aéroport départ
-        volSorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + text, 0, 1));
+        // Sinon, filtrer par aéroport départ (colonne 1), insensible à la casse
+        String pattern = java.util.regex.Pattern.quote(text);
+        volSorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + pattern, 1));
     }
 }
+
 
 
 
@@ -448,10 +489,10 @@ private void loadAeroports() {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("tab1", jPanel4);
+        jTabbedPane2.addTab("Escale", jPanel4);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("Recherche vol");
+        jLabel2.setText(" Recherche vol");
 
         txtSearchVol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -482,9 +523,9 @@ private void loadAeroports() {
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSearchVol, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearchVol, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -564,7 +605,9 @@ private void loadAeroports() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtSearchVolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchVolActionPerformed
-        // TODO add your handling code here:
+
+
+    
     }//GEN-LAST:event_txtSearchVolActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

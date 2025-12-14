@@ -318,9 +318,9 @@
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                                  <Component id="jLabel2" min="-2" pref="99" max="-2" attributes="0"/>
+                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtSearchVol" min="-2" pref="106" max="-2" attributes="0"/>
+                                  <Component id="txtSearchVol" min="-2" pref="204" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -428,8 +428,8 @@
                             <Container class="javax.swing.JPanel" name="jPanel4">
                               <Constraints>
                                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                                  <JTabbedPaneConstraints tabName="tab1">
-                                    <Property name="tabTitle" type="java.lang.String" value="tab1"/>
+                                  <JTabbedPaneConstraints tabName="Escale">
+                                    <Property name="tabTitle" type="java.lang.String" value="Escale"/>
                                   </JTabbedPaneConstraints>
                                 </Constraint>
                               </Constraints>
@@ -578,7 +578,7 @@
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="14" style="0"/>
                             </Property>
-                            <Property name="text" type="java.lang.String" value="Recherche vol"/>
+                            <Property name="text" type="java.lang.String" value=" Recherche vol"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JTextField" name="txtSearchVol">
