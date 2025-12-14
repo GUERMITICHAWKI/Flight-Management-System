@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 import technique.MyConnection;
 
 public class EscaleDAOController implements DAO<Escale, Integer> {
+    private AeroportDAOController aeroportDAO = new AeroportDAOController();
+
 
     @Override
     public void save(Escale e) {
@@ -109,27 +111,32 @@ e.setHeureDepart(rs.getTime("heureDepart").toLocalTime());
         }
     }
 
-    public ArrayList<Escale> getAllByVolId(int idVol) {
-        try {
-            Statement st = MyConnection.getInstance().getConnection().createStatement();
-            String req = "SELECT * FROM escale WHERE vol_id = " + idVol + " ORDER BY ordre";
-            ArrayList<Escale> liste = new ArrayList<>();
-            ResultSet rs = st.executeQuery(req);
-            while (rs.next()) {
-                Escale e = new Escale();
-                e.setId(rs.getInt("id"));
-               e.setHeureArrivee(rs.getTime("heureArrivee").toLocalTime());
-e.setHeureDepart(rs.getTime("heureDepart").toLocalTime());
-                e.setOrdre(rs.getInt("ordre"));
-                // plus tard : charger aéroport et vol via leurs DAO
-                liste.add(e);
-            }
-            System.out.println("getAllByVolId Escale Done!");
-            return liste;
-        } catch (SQLException ex) {
-            Logger.getLogger(Escale.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.println("getAllByVolId Escale Failed!");
-            return null;
+   public ArrayList<Escale> getAllByVolId(int idVol) {
+    try {
+        Statement st = MyConnection.getInstance().getConnection().createStatement();
+        String req = "SELECT * FROM escale WHERE vol_id = " + idVol + " ORDER BY ordre";
+        ArrayList<Escale> liste = new ArrayList<>();
+        ResultSet rs = st.executeQuery(req);
+        while (rs.next()) {
+
+            Escale e = new Escale();
+            e.setId(rs.getInt("id"));
+            e.setHeureArrivee(rs.getTime("heureArrivee").toLocalTime());
+            e.setHeureDepart(rs.getTime("heureDepart").toLocalTime());
+            e.setOrdre(rs.getInt("ordre"));
+
+            int idAero = rs.getInt("aeroport_id");
+            e.setAeroport(aeroportDAO.findById(idAero));   // <--- important
+
+            liste.add(e);
         }
+        System.out.println("getAllByVolId Escale Done!");
+        return liste;
+    } catch (SQLException ex) {
+        Logger.getLogger(Escale.class.getName()).log(Level.SEVERE, null, ex);
+        System.err.println("getAllByVolId Escale Failed!");
+        return null;
     }
+   }
 }
+

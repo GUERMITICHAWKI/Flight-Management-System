@@ -30,6 +30,8 @@ private AeroportDAOController aeroportDAO = new AeroportDAOController();
     public AddEscaleUI(Vol vol) {
     this.vol = vol;
     initComponents();
+    setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
     cbAeroportEscale.setModel(new javax.swing.DefaultComboBoxModel<Aeroport>());
     setLocationRelativeTo(null);
 
@@ -80,6 +82,8 @@ private AeroportDAOController aeroportDAO = new AeroportDAOController();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,6 +97,11 @@ private AeroportDAOController aeroportDAO = new AeroportDAOController();
         });
 
         txtHeureArrivee.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtHeureArrivee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHeureArriveeActionPerformed(evt);
+            }
+        });
 
         txtHeureDepart.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
@@ -108,57 +117,67 @@ private AeroportDAOController aeroportDAO = new AeroportDAOController();
 
         jLabel2.setText("Ordre");
 
-        jLabel3.setText("txtHeureArrivee");
+        jLabel3.setText("Heure d 'arrivee");
 
-        jLabel4.setText("txtHeureDepart");
+        jLabel4.setText("Heure de départ");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Add Escale");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(17, 17, 17))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(146, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(87, 87, 87))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 208, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbAeroportEscale, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtOrdre, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(97, 97, 97))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtHeureArrivee, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtHeureDepart, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap())))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnSaveEscale, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtHeureArrivee, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtHeureDepart, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbAeroportEscale, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtOrdre, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(118, 118, 118))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(261, 261, 261)
+                .addComponent(btnSaveEscale, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(303, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbAeroportEscale, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(27, 27, 27)
-                        .addComponent(txtOrdre, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbAeroportEscale, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtOrdre, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -168,8 +187,13 @@ private AeroportDAOController aeroportDAO = new AeroportDAOController();
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtHeureDepart, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
-                .addComponent(btnSaveEscale, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                .addComponent(btnSaveEscale, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
+        );
+
+        txtOrdre.setModel(
+            new javax.swing.SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -183,7 +207,10 @@ private AeroportDAOController aeroportDAO = new AeroportDAOController();
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -194,9 +221,10 @@ private AeroportDAOController aeroportDAO = new AeroportDAOController();
     }//GEN-LAST:event_cbAeroportEscaleActionPerformed
 
     private void btnSaveEscaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveEscaleActionPerformed
-  String heureArrTxt = txtHeureArrivee.getText().trim();
+   
+    String heureArrTxt = txtHeureArrivee.getText().trim();
     String heureDepTxt = txtHeureDepart.getText().trim();
-    Object selected = cbAeroportEscale.getSelectedItem();   // récupérer l'aéroport choisi
+    Object selected = cbAeroportEscale.getSelectedItem();
 
     if (selected == null || heureArrTxt.isEmpty() || heureDepTxt.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Remplis tous les champs.");
@@ -204,28 +232,53 @@ private AeroportDAOController aeroportDAO = new AeroportDAOController();
     }
 
     Aeroport aeroport = (Aeroport) selected;
+
     try {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime heureArr = LocalTime.parse(heureArrTxt, fmt);
         LocalTime heureDep = LocalTime.parse(heureDepTxt, fmt);
 
+        // Heures du vol (déjà dans ton objet vol)
+        LocalTime volDep = vol.getHeureDepart();
+        LocalTime volArr = vol.getHeureArrivee();
+
+        // 1) arrivée escale entre départ et arrivée du vol
+        if (heureArr.isBefore(volDep) || heureArr.isAfter(volArr)) {
+            JOptionPane.showMessageDialog(this,
+                "L'heure d'arrivée de l'escale doit être entre l'heure de départ et l'heure d'arrivée du vol.");
+            return;
+        }
+
+        // 2) départ escale >= arrivée escale
+        if (heureDep.isBefore(heureArr)) {
+            JOptionPane.showMessageDialog(this,
+                "L'heure de départ de l'escale doit être >= à l'heure d'arrivée de l'escale.");
+            return;
+        }
+
+        // Création et sauvegarde de l'escale
         Escale e = new Escale();
         e.setVol(vol);
-        int ordre = (Integer) txtOrdre.getValue();     // lire le spinner
-        e.setOrdre(ordre);
         e.setAeroport(aeroport);
+        e.setOrdre((int) txtOrdre.getValue());
         e.setHeureArrivee(heureArr);
         e.setHeureDepart(heureDep);
 
         escaleDAO.save(e);
-        JOptionPane.showMessageDialog(this, "Escale ajoutée.");
-        dispose();
+
+        JOptionPane.showMessageDialog(this, "Escale ajoutée avec succès.");
+        dispose(); // fermer la fenêtre si tu veux
 
     } catch (DateTimeParseException ex) {
-        JOptionPane.showMessageDialog(this, "Format heure invalide (utilise HH:mm).");
+        JOptionPane.showMessageDialog(this,
+            "Format d'heure invalide (utilise HH:mm, ex : 12:30).");
     }
        // TODO add your handling code here:
     }//GEN-LAST:event_btnSaveEscaleActionPerformed
+
+    private void txtHeureArriveeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHeureArriveeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHeureArriveeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -257,6 +310,7 @@ private AeroportDAOController aeroportDAO = new AeroportDAOController();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
             }
         });
     }
@@ -268,7 +322,9 @@ private AeroportDAOController aeroportDAO = new AeroportDAOController();
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField txtHeureArrivee;
     private javax.swing.JTextField txtHeureDepart;
     private javax.swing.JSpinner txtOrdre;
