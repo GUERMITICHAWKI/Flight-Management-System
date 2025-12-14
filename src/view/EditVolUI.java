@@ -34,6 +34,25 @@ private Vol volOriginal;    // pour garder les valeurs d'origine si besoin
     initComponents();
     setLocationRelativeTo(null);
 
+    // renderer pour n'afficher que le nom de l'aéroport
+    javax.swing.ListCellRenderer<? super Aeroport> aeroRenderer =
+        new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Aeroport) {
+                    Aeroport a = (Aeroport) value;
+                    setText(a.getNom());      // ici tu choisis le texte visible
+                }
+                return this;
+            }
+        };
+
+    cbAeroDepVol.setRenderer(aeroRenderer);
+    cbAeroArrVol.setRenderer(aeroRenderer);
+
     // 1) Charger tous les aéroports dans les combos
     List<Aeroport> lst = aerDAO.getAll();
     cbAeroDepVol.removeAllItems();
@@ -52,15 +71,11 @@ private Vol volOriginal;    // pour garder les valeurs d'origine si besoin
         txtHeureArrVol.setText(volOriginal.getHeureArrivee().toString());
         chkReservableVol.setSelected(volOriginal.isReservable());
 
-        // 3) Sélectionner les bons aéroports dans les combos
+        // 3) Sélectionner les bons aéroports
         Aeroport dep = volOriginal.getAeroportDepart();
         Aeroport arr = volOriginal.getAeroportArrivee();
-        if (dep != null) {
-            cbAeroDepVol.setSelectedItem(dep);
-        }
-        if (arr != null) {
-            cbAeroArrVol.setSelectedItem(arr);
-        }
+        if (dep != null) cbAeroDepVol.setSelectedItem(dep);
+        if (arr != null) cbAeroArrVol.setSelectedItem(arr);
     }
 }
 

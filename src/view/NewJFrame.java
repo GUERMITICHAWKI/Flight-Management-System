@@ -12,6 +12,10 @@ import javax.swing.table.DefaultTableModel;
 import model.Aeroport;
 import model.Vol;
 import view.AddAeroportUI;
+import controller.EscaleDAOController;
+
+import model.Escale;
+
 
 
 /**
@@ -19,6 +23,7 @@ import view.AddAeroportUI;
  * @author CHAWKI
  */
 public class NewJFrame extends javax.swing.JFrame {
+    
 
     /**
      * Creates new form NewJFrame
@@ -29,9 +34,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
 }
     private VolDAOController volDAO = new VolDAOController();
+private AeroportDAOController aeroportDAO = new AeroportDAOController();
+private EscaleDAOController escaleDAO = new EscaleDAOController();
 
 // méthode pour remplir le tableau des vols
 private void loadVols() {
+    
     DefaultTableModel model = (DefaultTableModel) jTableVol.getModel();
     model.setRowCount(0);
 
@@ -61,7 +69,6 @@ private void loadVols() {
 
 
 
-private AeroportDAOController aeroportDAO = new AeroportDAOController();
 
 private void loadAeroports() {
     DefaultTableModel model = (DefaultTableModel) jTableAeroport.getModel();
@@ -110,6 +117,15 @@ private void loadAeroports() {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableVol = new javax.swing.JTable();
         jButtonVolRefresh = new javax.swing.JButton();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableEscale = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,23 +144,12 @@ private void loadAeroports() {
         JpanelHeaderLayout.setVerticalGroup(
             JpanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JpanelHeaderLayout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         JpanelFooter.setBackground(new java.awt.Color(242, 242, 242));
         JpanelFooter.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        javax.swing.GroupLayout JpanelFooterLayout = new javax.swing.GroupLayout(JpanelFooter);
-        JpanelFooter.setLayout(JpanelFooterLayout);
-        JpanelFooterLayout.setHorizontalGroup(
-            JpanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        JpanelFooterLayout.setVerticalGroup(
-            JpanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 74, Short.MAX_VALUE)
-        );
 
         jTabbedPane1.setToolTipText("");
         jTabbedPane1.setName("cxcxcxcx"); // NOI18N
@@ -244,7 +249,7 @@ private void loadAeroports() {
                     .addComponent(jButtonRefersh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(jPanelContentsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelContentsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 589, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(756, 756, 756))
                     .addGroup(jPanelContentsLayout.createSequentialGroup()
@@ -254,6 +259,8 @@ private void loadAeroports() {
         );
 
         jTabbedPane1.addTab("Aeroport", jPanelContents);
+
+        jPanelvols.setLayout(new java.awt.BorderLayout());
 
         jButtonVolAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-add-50.png"))); // NOI18N
         jButtonVolAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -277,6 +284,12 @@ private void loadAeroports() {
             }
         });
 
+        jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableVolMouseClicked(evt);
+            }
+        });
+
         jTableVol.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
@@ -288,6 +301,11 @@ private void loadAeroports() {
                 "id", "Aéroport départ  ", "Aéroport arrivée  ", "Date départ", "Heure départ", "Date arrivée", "Heure arrivée"
             }
         ));
+        jTableVol.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableVolMouseClicked1(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTableVol);
 
         jButtonVolRefresh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-refresh-50.png"))); // NOI18N
@@ -297,56 +315,151 @@ private void loadAeroports() {
             }
         });
 
+        jTableEscale.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "id", "Ordre", "Aéroport", "Heure arrivée", "Heure départ"
+            }
+        ));
+        jScrollPane3.setViewportView(jTableEscale);
+        jTableEscale.getAccessibleContext().setAccessibleName("");
+
+        jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Add");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Edit");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Delete");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(27, 27, 27)
+                .addComponent(jButton3)
+                .addGap(27, 27, 27)
+                .addComponent(jButton4)
+                .addGap(20, 20, 20))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1166, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jTabbedPane2.addTab("tab1", jPanel4);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonVolRefresh)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonVolAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonVolEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonVolDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane2)
+                    .addComponent(jScrollPane2)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButtonVolRefresh)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonVolAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonVolEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonVolDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1166, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButtonVolDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
-                            .addComponent(jButtonVolAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonVolEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jButtonVolRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 281, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 832, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonVolEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
+                    .addComponent(jButtonVolAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonVolRefresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonVolDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1022, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45))
         );
 
-        javax.swing.GroupLayout jPanelvolsLayout = new javax.swing.GroupLayout(jPanelvols);
-        jPanelvols.setLayout(jPanelvolsLayout);
-        jPanelvolsLayout.setHorizontalGroup(
-            jPanelvolsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelvolsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanelvolsLayout.setVerticalGroup(
-            jPanelvolsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelvolsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 892, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jTabbedPane2.getAccessibleContext().setAccessibleName("");
+
+        jPanelvols.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         jTabbedPane1.addTab("Vols&Escale", jPanelvols);
+
+        javax.swing.GroupLayout JpanelFooterLayout = new javax.swing.GroupLayout(JpanelFooter);
+        JpanelFooter.setLayout(JpanelFooterLayout);
+        JpanelFooterLayout.setHorizontalGroup(
+            JpanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+        );
+        JpanelFooterLayout.setVerticalGroup(
+            JpanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JpanelFooterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1)
+                .addGap(56, 56, 56))
+        );
+
+        jTabbedPane1.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout JpanelMainLayout = new javax.swing.GroupLayout(JpanelMain);
         JpanelMain.setLayout(JpanelMainLayout);
@@ -356,8 +469,7 @@ private void loadAeroports() {
                 .addContainerGap()
                 .addGroup(JpanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(JpanelFooter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JpanelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTabbedPane1))
+                    .addComponent(JpanelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         JpanelMainLayout.setVerticalGroup(
@@ -365,14 +477,10 @@ private void loadAeroports() {
             .addGroup(JpanelMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(JpanelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(JpanelFooter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-
-        jTabbedPane1.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -449,41 +557,13 @@ private void loadAeroports() {
         JOptionPane.showMessageDialog(this, "Aéroport supprimé avec succès.");        // TODO add your handling code here:
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
-    private void jButtonVolEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolEditActionPerformed
- int row = jTableVol.getSelectedRow();
-    if (row == -1) {
-        JOptionPane.showMessageDialog(this, "Sélectionnez un vol.");
-        return;
-    }
-
-    Object value = jTableVol.getValueAt(row, 0);  // colonne 0 = id
-    int id;
-
-    if (value instanceof Integer) {
-        id = (Integer) value;
-    } else {
-        id = Integer.parseInt(value.toString());
-    }
-
-    EditVolUI ui = new EditVolUI(id);
-    ui.setVisible(true);
-
-     // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonVolEditActionPerformed
-
-    private void jButtonVolAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolAddActionPerformed
-   AddVolUI f = new AddVolUI();
-    f.setVisible(true);   // l’utilisateur remplit et clique Save
-    loadVols();           // après la fermeture, on recharge le tableau des vols
-    }//GEN-LAST:event_jButtonVolAddActionPerformed
-
     private void jButtonVolRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolRefreshActionPerformed
- loadVols();      // TODO add your handling code here:
+        loadVols();      // TODO add your handling code here:
     }//GEN-LAST:event_jButtonVolRefreshActionPerformed
 
     private void jButtonVolDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolDeleteActionPerformed
 
-int row = jTableVol.getSelectedRow();
+        int row = jTableVol.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Sélectionne un Vol d'abord.");
             return;
@@ -506,6 +586,124 @@ int row = jTableVol.getSelectedRow();
 
         JOptionPane.showMessageDialog(this, "Vol supprimé avec succès.");        // TODO add your handling code here:
     }//GEN-LAST:event_jButtonVolDeleteActionPerformed
+
+    private void jButtonVolEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolEditActionPerformed
+        int row = jTableVol.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Sélectionnez un vol.");
+            return;
+        }
+
+        Object value = jTableVol.getValueAt(row, 0);  // colonne 0 = id
+        int id;
+
+        if (value instanceof Integer) {
+            id = (Integer) value;
+        } else {
+            id = Integer.parseInt(value.toString());
+        }
+
+        EditVolUI ui = new EditVolUI(id);
+        ui.setVisible(true);
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonVolEditActionPerformed
+
+    private void jButtonVolAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolAddActionPerformed
+        AddVolUI f = new AddVolUI();
+        f.setVisible(true);   // l’utilisateur remplit et clique Save
+        loadVols();           // après la fermeture, on recharge le tableau des vols
+    }//GEN-LAST:event_jButtonVolAddActionPerformed
+
+    private void jTableVolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableVolMouseClicked
+int row = jTableVol.getSelectedRow();
+    if (row == -1) return;
+
+    Object val = jTableVol.getValueAt(row, 0);   // id du vol colonne 0
+    int idVol = Integer.parseInt(val.toString());  // lecture sécurisée [web:348][web:371]
+
+    DefaultTableModel model = (DefaultTableModel) jTableEscale.getModel();
+    model.setRowCount(0);
+
+    java.util.List<Escale> escales = escaleDAO.getAllByVolId(idVol);
+    if (escales != null) {
+        for (Escale e : escales) {
+            String nomAero = e.getAeroport() != null ? e.getAeroport().getNom() : "";
+            model.addRow(new Object[] {
+                e.getId(),
+                e.getOrdre(),
+                nomAero,
+                e.getHeureArrivee(),
+                e.getHeureDepart()
+            });  // ajout de lignes via DefaultTableModel.addRow [web:372][web:383]
+        }
+    }        // TODO add your handling code here:
+    }//GEN-LAST:event_jTableVolMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+ jTableVolMouseClicked(null);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+int row = jTableVol.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Sélectionnez un vol d'abord.");
+        return;
+    }
+
+    int idVol = Integer.parseInt(jTableVol.getValueAt(row, 0).toString());
+    Vol v = volDAO.findById(idVol);
+
+    new AddEscaleUI(v).setVisible(true);   // ta fenêtre d’ajout
+    jTableVolMouseClicked(null);         // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+ int row = jTableEscale.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Sélectionnez une escale.");
+        return;
+    }
+
+    int idEscale = Integer.parseInt(jTableEscale.getValueAt(row, 0).toString());
+
+    int c = JOptionPane.showConfirmDialog(this,
+            "Supprimer cette escale ?",
+            "Confirmation",
+            JOptionPane.YES_NO_OPTION);
+    if (c != JOptionPane.YES_OPTION) return;
+
+    escaleDAO.delete(idEscale);
+    jTableVolMouseClicked(null);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTableVolMouseClicked1(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableVolMouseClicked1
+ int row = jTableVol.getSelectedRow();
+    if (row == -1) return;
+
+    Object val = jTableVol.getValueAt(row, 0);   // id du vol colonne 0
+    int idVol = Integer.parseInt(val.toString());  // lecture sécurisée [web:348][web:371]
+
+    DefaultTableModel model = (DefaultTableModel) jTableEscale.getModel();
+    model.setRowCount(0);
+
+    java.util.List<Escale> escales = escaleDAO.getAllByVolId(idVol);
+    if (escales != null) {
+        for (Escale e : escales) {
+            String nomAero = e.getAeroport() != null ? e.getAeroport().getNom() : "";
+            model.addRow(new Object[] {
+                e.getId(),
+                e.getOrdre(),
+                nomAero,
+                e.getHeureArrivee(),
+                e.getHeureDepart()
+            });  // ajout de lignes via DefaultTableModel.addRow [web:372][web:383]
+        }
+    }       // TODO add your handling code here:
+    }//GEN-LAST:event_jTableVolMouseClicked1
 
     /**
      * @param args the command line arguments
@@ -548,6 +746,10 @@ int row = jTableVol.getSelectedRow();
     private java.awt.Panel JpanelFooter;
     private java.awt.Panel JpanelHeader;
     private java.awt.Panel JpanelMain;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonEdit;
@@ -559,12 +761,17 @@ int row = jTableVol.getSelectedRow();
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelContents;
     private javax.swing.JPanel jPanelvols;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTableAeroport;
+    private javax.swing.JTable jTableEscale;
     private javax.swing.JTable jTableVol;
     // End of variables declaration//GEN-END:variables
 }

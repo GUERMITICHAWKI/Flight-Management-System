@@ -11,9 +11,11 @@ import javax.swing.JOptionPane;
 import model.Aeroport;
 import model.Vol;     
 import controller.AeroportDAOController;
+import java.awt.HeadlessException;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.WindowConstants;
 import javax.swing.WindowConstants;
 
 
@@ -22,33 +24,63 @@ import javax.swing.WindowConstants;
  * @author CHAWKI
  */
 public class AddVolUI extends javax.swing.JFrame {
-        private VolDAOController volDAO = new VolDAOController();
+        private  VolDAOController volDAO = new VolDAOController();
 
 
     /**
      * Creates new form AddVolUI
      */
-   public AddVolUI() {
-    initComponents();          // on laisse NetBeans gérer la création des composants
+ public AddVolUI() {
+    initComponents();
     setLocationRelativeTo(null);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-    // Modèle simple pour les combos (pas de String[])
-setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    // renderer pour n’afficher que le nom
+    cbAeroDep.setRenderer(new javax.swing.DefaultListCellRenderer() {
+        @Override
+        public java.awt.Component getListCellRendererComponent(
+                javax.swing.JList<?> list, Object value, int index,
+                boolean isSelected, boolean cellHasFocus) {
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            if (value instanceof Aeroport) {
+                Aeroport a = (Aeroport) value;
+                setText(a.getNom());   // ici tu choisis ce qui s’affiche
+            }
+            return this;
+        }
+    });
 
-    cbAeroDep.setModel(new javax.swing.DefaultComboBoxModel());
-    cbAeroArr.setModel(new javax.swing.DefaultComboBoxModel());
+    cbAeroArr.setRenderer(new javax.swing.DefaultListCellRenderer() {
+        @Override
+        public java.awt.Component getListCellRendererComponent(
+                javax.swing.JList<?> list, Object value, int index,
+                boolean isSelected, boolean cellHasFocus) {
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            if (value instanceof Aeroport) {
+                Aeroport a = (Aeroport) value;
+                setText(a.getNom());
+            }
+            return this;
+        }
+    });
 
-    // Charger les aéroports
+    // chargement des aéroports comme avant
     AeroportDAOController dao = new AeroportDAOController();
     List<Aeroport> lst = dao.getAll();
-
     cbAeroDep.removeAllItems();
     cbAeroArr.removeAllItems();
     for (Aeroport a : lst) {
-    ((javax.swing.JComboBox) cbAeroDep).addItem(a.getNom());
-    ((javax.swing.JComboBox) cbAeroArr).addItem(a.getNom());
+        cbAeroDep.addItem(a);
+        cbAeroArr.addItem(a);
+    }
 }
-}
+
+
+
+
+
+
+
 
 
     /**
@@ -139,15 +171,17 @@ setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             }
         });
 
-        cbAeroDep.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Aéroport de départ");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Aéroport d’arrivée");
 
-        cbAeroArr.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbAeroArr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbAeroArrActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -265,7 +299,11 @@ setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSaveVolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveVolActionPerformed
-   String dateDep  = txtDateDep.getText().trim();
+Aeroport dep = (Aeroport) cbAeroDep.getSelectedItem();
+Aeroport arr = (Aeroport) cbAeroArr.getSelectedItem();
+   
+        String dateDep  = txtDateDep.getText().trim();
+   
     String heureDep = txtHeureDep.getText().trim();
     String dateArr  = txtDateArr.getText().trim();
     String heureArr = txtHeureArr.getText().trim();
@@ -286,9 +324,7 @@ setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         v.setHeureArrivee(LocalTime.parse(heureArr));
         v.setReservable(reservable);
 
-        Aeroport dep = (Aeroport) cbAeroDep.getSelectedItem();
-        Aeroport arr = (Aeroport) cbAeroArr.getSelectedItem();
-
+        
         if (dep == null || arr == null) {
             JOptionPane.showMessageDialog(this,
                     "Veuillez choisir un aéroport de départ et d’arrivée.");
@@ -302,7 +338,7 @@ setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         JOptionPane.showMessageDialog(this, "Vol ajouté avec succès.");
         dispose();
 
-    } catch (Exception ex) {
+    } catch (HeadlessException ex) {
         JOptionPane.showMessageDialog(this,
                 "Erreur de format de date/heure (attendu: yyyy-MM-dd et HH:mm).");
     }
@@ -312,6 +348,10 @@ setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     private void txtDateDepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateDepActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDateDepActionPerformed
+
+    private void cbAeroArrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAeroArrActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbAeroArrActionPerformed
 
     /**
      * @param args the command line arguments
@@ -341,16 +381,14 @@ setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddVolUI().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new AddVolUI().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cbAeroArr;
-    private javax.swing.JComboBox<String> cbAeroDep;
+    private javax.swing.JComboBox<Aeroport> cbAeroArr;
+    private javax.swing.JComboBox<Aeroport> cbAeroDep;
     private javax.swing.JCheckBox chkReservable;
     private javax.swing.JButton jButtonSaveVol;
     private javax.swing.JLabel jLabel1;
