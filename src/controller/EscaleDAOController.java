@@ -16,13 +16,13 @@ public class EscaleDAOController implements DAO<Escale, Integer> {
         try {
             Statement st = MyConnection.getInstance().getConnection().createStatement();
             String req = "INSERT INTO escale (heureArrivee, heureDepart, ordre, vol_id, aeroport_id) "
-                    + "VALUES ('" + e.getHeureArrivee() + "', '"
-                    + e.getHeureDepart() + "', "
-                    + e.getOrdre() + ", "
-                    + e.getVol().getId() + ", "
-                    + e.getAeroport().getId() + ")";
-            System.out.println("INSERTION Escale Done!");
+        + "VALUES ('" + e.getHeureArrivee().toString() + "', '"
+        + e.getHeureDepart().toString() + "', "
+        + e.getOrdre() + ", "
+        + e.getVol().getId() + ", "
+        + e.getAeroport().getId() + ")";
             st.executeUpdate(req);
+            System.out.println("INSERTION Escale Done!");
         } catch (SQLException ex) {
             Logger.getLogger(Escale.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("INSERTION Escale Failed!");
@@ -34,8 +34,8 @@ public class EscaleDAOController implements DAO<Escale, Integer> {
         try {
             Statement st = MyConnection.getInstance().getConnection().createStatement();
             String req = "DELETE FROM escale WHERE id=" + id;
-            System.out.println("DELETE Escale Done!");
             st.executeUpdate(req);
+            System.out.println("DELETE Escale Done!");
         } catch (SQLException ex) {
             Logger.getLogger(Escale.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("DELETE Escale Failed!");
@@ -53,8 +53,8 @@ public class EscaleDAOController implements DAO<Escale, Integer> {
                     + "vol_id=" + e.getVol().getId() + ", "
                     + "aeroport_id=" + e.getAeroport().getId()
                     + " WHERE id=" + id;
-            System.out.println("UPDATE Escale Done!");
             st.executeUpdate(req);
+            System.out.println("UPDATE Escale Done!");
         } catch (SQLException ex) {
             Logger.getLogger(Escale.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("UPDATE Escale Failed!");
@@ -66,18 +66,18 @@ public class EscaleDAOController implements DAO<Escale, Integer> {
         try {
             Statement st = MyConnection.getInstance().getConnection().createStatement();
             String req = "SELECT * FROM escale";
-            System.out.println("getAll Escale Done!");
             ArrayList<Escale> liste = new ArrayList<>();
             ResultSet rs = st.executeQuery(req);
             while (rs.next()) {
                 Escale e = new Escale();
                 e.setId(rs.getInt("id"));
-                e.setHeureArrivee(rs.getTime("heureArrivee").toLocalTime());
-                e.setHeureDepart(rs.getTime("heureDepart").toLocalTime());
+               e.setHeureArrivee(rs.getTime("heureArrivee").toLocalTime());
+e.setHeureDepart(rs.getTime("heureDepart").toLocalTime());
                 e.setOrdre(rs.getInt("ordre"));
-                // tu pourras charger Vol et Aeroport plus tard avec leurs DAO
+                // plus tard : charger vol et aéroport si besoin
                 liste.add(e);
             }
+            System.out.println("getAll Escale Done!");
             return liste;
         } catch (SQLException ex) {
             Logger.getLogger(Escale.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,20 +91,44 @@ public class EscaleDAOController implements DAO<Escale, Integer> {
         try {
             Statement st = MyConnection.getInstance().getConnection().createStatement();
             String req = "SELECT * FROM escale WHERE id=" + id;
-            System.out.println("findById Escale Done!");
             Escale e = null;
             ResultSet rs = st.executeQuery(req);
             while (rs.next()) {
                 e = new Escale();
                 e.setId(rs.getInt("id"));
-                e.setHeureArrivee(rs.getTime("heureArrivee").toLocalTime());
-                e.setHeureDepart(rs.getTime("heureDepart").toLocalTime());
+               e.setHeureArrivee(rs.getTime("heureArrivee").toLocalTime());
+               e.setHeureDepart(rs.getTime("heureDepart").toLocalTime());
                 e.setOrdre(rs.getInt("ordre"));
             }
+            System.out.println("findById Escale Done!");
             return e;
         } catch (SQLException ex) {
             Logger.getLogger(Escale.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("findById Escale Failed!");
+            return null;
+        }
+    }
+
+    public ArrayList<Escale> getAllByVolId(int idVol) {
+        try {
+            Statement st = MyConnection.getInstance().getConnection().createStatement();
+            String req = "SELECT * FROM escale WHERE vol_id = " + idVol + " ORDER BY ordre";
+            ArrayList<Escale> liste = new ArrayList<>();
+            ResultSet rs = st.executeQuery(req);
+            while (rs.next()) {
+                Escale e = new Escale();
+                e.setId(rs.getInt("id"));
+               e.setHeureArrivee(rs.getTime("heureArrivee").toLocalTime());
+e.setHeureDepart(rs.getTime("heureDepart").toLocalTime());
+                e.setOrdre(rs.getInt("ordre"));
+                // plus tard : charger aéroport et vol via leurs DAO
+                liste.add(e);
+            }
+            System.out.println("getAllByVolId Escale Done!");
+            return liste;
+        } catch (SQLException ex) {
+            Logger.getLogger(Escale.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("getAllByVolId Escale Failed!");
             return null;
         }
     }

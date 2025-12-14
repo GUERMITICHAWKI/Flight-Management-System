@@ -36,11 +36,11 @@ public class Escale {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public LocalTime getHeureArrivee() { return heureArrivee; }
-    public void setHeureArrivee(LocalTime heureArrivee) { this.heureArrivee = heureArrivee; }
+   public LocalTime getHeureArrivee() { return heureArrivee; }
+public void setHeureArrivee(LocalTime heureArrivee) { this.heureArrivee = heureArrivee; }
 
-    public LocalTime getHeureDepart() { return heureDepart; }
-    public void setHeureDepart(LocalTime heureDepart) { this.heureDepart = heureDepart; }
+public LocalTime getHeureDepart() { return heureDepart; }
+public void setHeureDepart(LocalTime heureDepart) { this.heureDepart = heureDepart; }
 
     public int getOrdre() { return ordre; }
     public void setOrdre(int ordre) { this.ordre = ordre; }
