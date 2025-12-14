@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import technique.MyConnection;
 
 public class AeroportDAOController implements DAO<Aeroport, Integer> {
@@ -24,17 +25,26 @@ public class AeroportDAOController implements DAO<Aeroport, Integer> {
         }
     }
 
-    public void delete(Integer id) {
-        try {
-            Statement st = MyConnection.getInstance().getConnection().createStatement();
-            String req = "DELETE FROM aeroport WHERE id=" + id;
-            System.out.println("DELETE Aeroport Done!");
-            st.executeUpdate(req);
-        } catch (SQLException ex) {
-            Logger.getLogger(Aeroport.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.println("DELETE Aeroport Failed!");
-        }
+   public void delete(Integer id) {
+    try {
+        Statement st = MyConnection.getInstance().getConnection().createStatement();
+        String req = "DELETE FROM aeroport WHERE id=" + id;
+        st.executeUpdate(req);
+        System.out.println("DELETE Aeroport Done!");
+    } catch (java.sql.SQLIntegrityConstraintViolationException ex) {
+        JOptionPane.showMessageDialog(
+            null,
+            "Impossible de supprimer cet aéroport : il est utilisé dans des vols ou des escales."
+        );
+        System.err.println("DELETE Aeroport blocked by FK.");
+    } catch (SQLException ex) {
+        Logger.getLogger(Aeroport.class.getName()).log(Level.SEVERE, null, ex);
+        System.err.println("DELETE Aeroport Failed!");
     }
+}
+
+
+
 
     public void update(Aeroport a, Integer id) {
         try {

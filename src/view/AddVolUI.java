@@ -12,6 +12,7 @@ import model.Aeroport;
 import model.Vol;     
 import controller.AeroportDAOController;
 import java.awt.HeadlessException;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -94,15 +95,14 @@ public class AddVolUI extends javax.swing.JFrame {
 
         jPanel4 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtDateDep = new javax.swing.JTextField();
         txtHeureDep = new javax.swing.JTextField();
-        txtDateArr = new javax.swing.JTextField();
         txtHeureArr = new javax.swing.JTextField();
         chkReservable = new javax.swing.JCheckBox();
         jButtonSaveVol = new javax.swing.JButton();
@@ -110,20 +110,32 @@ public class AddVolUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         cbAeroArr = new javax.swing.JComboBox<>();
+        dcDateDep = new com.toedter.calendar.JDateChooser();
+        dcDateArr = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Add Vol");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel7)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -149,19 +161,15 @@ public class AddVolUI extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Heure d'arrét");
 
-        txtDateDep.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtDateDep.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDateDepActionPerformed(evt);
-            }
-        });
-
         txtHeureDep.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        txtDateArr.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         chkReservable.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         chkReservable.setText("Reservable");
+        chkReservable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkReservableActionPerformed(evt);
+            }
+        });
 
         jButtonSaveVol.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jButtonSaveVol.setText("Save");
@@ -201,25 +209,29 @@ public class AddVolUI extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(cbAeroDep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71)
+                .addGap(69, 69, 69)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cbAeroArr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)))
                         .addGap(49, 49, 49)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtHeureArr, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
-                            .addComponent(txtDateArr, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtHeureDep, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtDateDep, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(dcDateDep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dcDateArr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(63, 63, 63))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -231,31 +243,31 @@ public class AddVolUI extends javax.swing.JFrame {
                     .addComponent(cbAeroDep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(cbAeroArr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(67, 67, 67)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDateDep, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(28, 28, 28)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtHeureDep, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addGap(78, 78, 78)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(txtDateArr, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtHeureArr, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4))
-                                .addGap(18, 18, 18)
-                                .addComponent(chkReservable, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(jButtonSaveVol, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel3)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(dcDateDep, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(36, 36, 36)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtHeureDep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtHeureArr, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addComponent(chkReservable, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jButtonSaveVol, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(dcDateArr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(210, 210, 210))))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -299,35 +311,69 @@ public class AddVolUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSaveVolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveVolActionPerformed
-Aeroport dep = (Aeroport) cbAeroDep.getSelectedItem();
-Aeroport arr = (Aeroport) cbAeroArr.getSelectedItem();
-   
-        String dateDep  = txtDateDep.getText().trim();
-   
-    String heureDep = txtHeureDep.getText().trim();
-    String dateArr  = txtDateArr.getText().trim();
-    String heureArr = txtHeureArr.getText().trim();
-    boolean reservable = chkReservable.isSelected();
+  Aeroport dep = (Aeroport) cbAeroDep.getSelectedItem();
+    Aeroport arr = (Aeroport) cbAeroArr.getSelectedItem();
 
-    if (dateDep.isEmpty() || heureDep.isEmpty()
-            || dateArr.isEmpty() || heureArr.isEmpty()) {
+    // 1) Aéroports obligatoires
+    if (dep == null || arr == null) {
         JOptionPane.showMessageDialog(this,
-                "Tous les champs de date/heure sont obligatoires.");
+                "Veuillez choisir un aéroport de départ et d’arrivée.");
+        return;
+    }
+
+    // 2) Aéroport départ != arrivée
+    if (dep.equals(arr)) {
+        JOptionPane.showMessageDialog(this,
+                "L'aéroport de départ doit être différent de l'aéroport d'arrivée.");
         return;
     }
 
     try {
-        Vol v = new Vol();
-        v.setDateDepart(LocalDate.parse(dateDep));      // format: 2025-12-31
-        v.setHeureDepart(LocalTime.parse(heureDep));    // format: 14:30
-        v.setDateArrivee(LocalDate.parse(dateArr));
-        v.setHeureArrivee(LocalTime.parse(heureArr));
-        v.setReservable(reservable);
+        // 3) DATES depuis JDateChooser
+        java.util.Date dDep = dcDateDep.getDate();
+        java.util.Date dArr = dcDateArr.getDate();
 
-        
-        if (dep == null || arr == null) {
+        if (dDep == null || dArr == null) {
             JOptionPane.showMessageDialog(this,
-                    "Veuillez choisir un aéroport de départ et d’arrivée.");
+                    "Choisissez les dates de départ et d'arrivée.");
+            return;
+        }
+
+        LocalDate dateDep = dDep.toInstant()
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate dateArr = dArr.toInstant()
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDate();
+
+        // 4) HEURES depuis les JTextField
+        String heureDepTxt = txtHeureDep.getText().trim();
+        String heureArrTxt = txtHeureArr.getText().trim();
+
+        if (heureDepTxt.isEmpty() || heureArrTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Les heures de départ et d'arrivée sont obligatoires.");
+            return;
+        }
+
+        LocalTime heureDep = LocalTime.parse(heureDepTxt);   // HH:mm
+        LocalTime heureArr = LocalTime.parse(heureArrTxt);
+
+        // 5) Création du Vol
+        Vol v = new Vol();
+        v.setDateDepart(dateDep);
+        v.setHeureDepart(heureDep);
+        v.setDateArrivee(dateArr);
+        v.setHeureArrivee(heureArr);
+        v.setReservable(chkReservable.isSelected());
+
+        // 6) Vérifier que l'arrivée est après le départ
+        LocalDateTime dtDep = v.getDateDepart().atTime(v.getHeureDepart());
+        LocalDateTime dtArr = v.getDateArrivee().atTime(v.getHeureArrivee());
+
+        if (!dtArr.isAfter(dtDep)) {
+            JOptionPane.showMessageDialog(this,
+                    "La date/heure d'arrivée doit être postérieure à la date/heure de départ.");
             return;
         }
 
@@ -338,20 +384,19 @@ Aeroport arr = (Aeroport) cbAeroArr.getSelectedItem();
         JOptionPane.showMessageDialog(this, "Vol ajouté avec succès.");
         dispose();
 
-    } catch (HeadlessException ex) {
+    } catch (Exception ex) {
         JOptionPane.showMessageDialog(this,
-                "Erreur de format de date/heure (attendu: yyyy-MM-dd et HH:mm).");
+                "Erreur de format pour l'heure (format attendu : HH:mm).");
     }
-    
     }//GEN-LAST:event_jButtonSaveVolActionPerformed
-
-    private void txtDateDepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateDepActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDateDepActionPerformed
 
     private void cbAeroArrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAeroArrActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbAeroArrActionPerformed
+
+    private void chkReservableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkReservableActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkReservableActionPerformed
 
     /**
      * @param args the command line arguments
@@ -390,6 +435,8 @@ Aeroport arr = (Aeroport) cbAeroArr.getSelectedItem();
     private javax.swing.JComboBox<Aeroport> cbAeroArr;
     private javax.swing.JComboBox<Aeroport> cbAeroDep;
     private javax.swing.JCheckBox chkReservable;
+    private com.toedter.calendar.JDateChooser dcDateArr;
+    private com.toedter.calendar.JDateChooser dcDateDep;
     private javax.swing.JButton jButtonSaveVol;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -397,12 +444,11 @@ Aeroport arr = (Aeroport) cbAeroArr.getSelectedItem();
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField txtDateArr;
-    private javax.swing.JTextField txtDateDep;
     private javax.swing.JTextField txtHeureArr;
     private javax.swing.JTextField txtHeureDep;
     // End of variables declaration//GEN-END:variables
